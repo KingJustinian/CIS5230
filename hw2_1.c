@@ -2,28 +2,28 @@
 #include <windows.h>
 
 unsigned int count = 0;
-const int iterations = 1000000000; // one billion
+const int iterations = 1000000; // one billion
 HANDLE tmutex;
 
 DWORD WINAPI incr(void* arg) {
 	int i;
 	for (i = 0; i < iterations; i++) {
-		//WaitForSingleObject(tmutex, INFINITE);
+		WaitForSingleObject(tmutex, INFINITE);
 		count++;
-		//ReleaseMutex(tmutex);
+		ReleaseMutex(tmutex);
 	}
 
 	return 0;
 }
 
 int main() {
-	// set so only one processor is used]
+	// set so only one processor is used (doesn't seem to be working)
 	//DWORD_PTR processAffinityMask = 1;
 	//BOOL success = SetProcessAffinityMask(GetCurrentProcess(), processAffinityMask);
 	//printf("Affinity Success: %s\n", success ? "true" : "false");
 
-	const int numThreads = 40;
-	HANDLE threads[40];
+	const int numThreads = 1;
+	HANDLE threads[1];
 	tmutex = CreateMutex(0, FALSE, 0);
 	int i;
 	int threadId;
